@@ -1,4 +1,4 @@
-package tableSpaceFactory;
+package model.tableSpaceFactory;
 
 import utils.TableSpaceType;
 

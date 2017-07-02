@@ -1,9 +1,8 @@
-package tableSpaceFactory;
+package model.tableSpaceFactory;
 
 import java.util.List;
 
 import model.Dbf;
-import utils.TableSpaceType;
 
 public abstract class TableSpace {
 	

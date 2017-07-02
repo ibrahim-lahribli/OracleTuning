@@ -1,6 +1,6 @@
 package model;
 
-import tableSpaceFactory.TableSpace;
+import model.tableSpaceFactory.TableSpace;
 
 public class Dbf {
 

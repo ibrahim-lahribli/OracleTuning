@@ -1,4 +1,4 @@
-package tableSpaceFactory;
+package model.tableSpaceFactory;
 
 public class TableSpaceTemporary extends TableSpace {
 
