@@ -1,15 +1,15 @@
-package model;
+package tableSpaceFactory;
 
 import java.util.List;
 
+import model.Dbf;
 import utils.TableSpaceType;
 
-public class TableSpace {
+public abstract class TableSpace {
 	
 	private String name;
 	private Long size;
 	private String status;
-	private TableSpaceType type;
 	private double fillingRate;
 	private List<Dbf> dbfList;
 	
@@ -37,12 +37,6 @@ public class TableSpace {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public TableSpaceType getType() {
-		return type;
-	}
-	public void setType(TableSpaceType type) {
-		this.type = type;
-	}
 	public double getFillingRate() {
 		return fillingRate;
 	}
@@ -53,12 +47,11 @@ public class TableSpace {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TableSpace(String name, Long size, String status, TableSpaceType type, double fillingRate) {
+	public TableSpace(String name, Long size, String status, double fillingRate) {
 		super();
 		this.name = name;
 		this.size = size;
 		this.status = status;
-		this.type = type;
 		this.fillingRate = fillingRate;
 	}
 	

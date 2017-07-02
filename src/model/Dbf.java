@@ -1,5 +1,7 @@
 package model;
 
+import tableSpaceFactory.TableSpace;
+
 public class Dbf {
 
 	private String name;

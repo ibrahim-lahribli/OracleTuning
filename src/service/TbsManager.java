@@ -2,7 +2,7 @@ package service;
 
 import java.util.List;
 
-import model.TableSpace;
+import tableSpaceFactory.TableSpace;
 
 public interface TbsManager {
 	
