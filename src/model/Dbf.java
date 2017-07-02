@@ -6,6 +6,7 @@ public class Dbf {
 	private String path;
 	private Long size;
 	private TableSpace tableSpace;
+	
 	public String getName() {
 		return name;
 	}
@@ -41,7 +42,6 @@ public class Dbf {
 		this.size = size;
 		this.tableSpace = tableSpace;
 	}
-	
 	
 	
 }

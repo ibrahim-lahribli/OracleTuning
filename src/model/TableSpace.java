@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import utils.TableSpaceType;
 
 public class TableSpace {
@@ -9,6 +11,14 @@ public class TableSpace {
 	private String status;
 	private TableSpaceType type;
 	private double fillingRate;
+	private List<Dbf> dbfList;
+	
+	public List<Dbf> getDbfList() {
+		return dbfList;
+	}
+	public void setDbfList(List<Dbf> dbfList) {
+		this.dbfList = dbfList;
+	}
 	public String getName() {
 		return name;
 	}
