@@ -1,9 +1,19 @@
 package model;
 
-public class Redo_File {
+public class RedoFile {
+	private String name;
 	private String path;
 	private int size;
 	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getPath() {
 		return path;
 	}
@@ -20,7 +30,7 @@ public class Redo_File {
 		this.size = size;
 	}
 
-	public Redo_File(String path, int size) {
+	public RedoFile(String path, int size) {
 		super();
 		this.path = path;
 		this.size = size;
