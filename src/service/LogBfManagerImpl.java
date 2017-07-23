@@ -21,10 +21,7 @@ public class LogBfManagerImpl  implements LogBfManager{
 	            String sql="show parameter LOG_BUFFER ";
 	            DbConfig.pst= DbConfig.con.prepareStatement(sql);
 	            DbConfig.rs= DbConfig.pst.executeQuery(sql);
-	           
-	            
-	          
-	            
+
 	        } catch (SQLException ex) {
 	             JOptionPane.showMessageDialog(null, ex);
 	            

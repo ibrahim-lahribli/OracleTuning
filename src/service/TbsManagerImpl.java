@@ -7,12 +7,6 @@ import model.tableSpaceFactory.TableSpace;
 public class TbsManagerImpl implements TbsManager {
 
 	@Override
-	public void addTbs() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public TableSpace findOne(String name) {
 		// TODO Auto-generated method stub
 		return null;
@@ -40,6 +34,36 @@ public class TbsManagerImpl implements TbsManager {
 	public void editThreshold(TableSpace tableSpace, Long threshold) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void addTbs(TableSpace tableSpace) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void activerTbs(TableSpace tableSpace) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void desactiverTbs(TableSpace tableSpace) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public double getFreeSpace(TableSpace tableSpace) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void replaceCurrentUndoTbs(TableSpace tableSpace) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
