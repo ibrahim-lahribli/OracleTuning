@@ -2,67 +2,72 @@ package service;
 
 import java.util.List;
 
+import dao.TbsDao;
+import model.Dbf;
 import model.tableSpaceFactory.TableSpace;
+import model.tableSpaceFactory.TableSpacePermanent;
+import model.tableSpaceFactory.TableSpaceTemporary;
+import model.tableSpaceFactory.TableSpaceUndo;
 
 public class TbsManagerImpl implements TbsManager {
 
 	@Override
 	public TableSpace findOne(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return TbsDao.findOne(name);
 	}
 
 	@Override
 	public List<TableSpace> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return TbsDao.findAll();
 	}
 
 	@Override
-	public void setDefaultTableSpace(TableSpace tableSpace) {
-		// TODO Auto-generated method stub
-
+	public void setDefaultTableSpace(TableSpace tableSpace, String user) {
+		TbsDao.setDefaultTableSpace(tableSpace, user);
 	}
 
 	@Override
 	public void editSize(TableSpace tableSpace, Long size) {
-		// TODO Auto-generated method stub
+		TbsDao.editSize(tableSpace, size);
 
 	}
 
 	@Override
 	public void editThreshold(TableSpace tableSpace, Long threshold) {
-		// TODO Auto-generated method stub
+		TbsDao.editSize(tableSpace, threshold);
 
 	}
 
 	@Override
-	public void addTbs(TableSpace tableSpace) {
-		// TODO Auto-generated method stub
-		
+	public void addTbs(TableSpace tableSpace, Dbf dbf) {
+		if(tableSpace instanceof TableSpacePermanent)
+			TbsDao.addTbs(tableSpace, dbf);
+		else if(tableSpace instanceof TableSpaceTemporary)
+			TbsDao.addTemporaryTbs(tableSpace, dbf);
+		else if(tableSpace instanceof TableSpaceUndo)
+			TbsDao.addUndoTbs(tableSpace, dbf);
 	}
 
 	@Override
 	public void activerTbs(TableSpace tableSpace) {
-		// TODO Auto-generated method stub
+		TbsDao.activerTbs(tableSpace);
 		
 	}
 
 	@Override
 	public void desactiverTbs(TableSpace tableSpace) {
-		// TODO Auto-generated method stub
+		TbsDao.desactiverTbs(tableSpace);
 		
 	}
 
 	@Override
 	public double getFreeSpace(TableSpace tableSpace) {
-		// TODO Auto-generated method stub
-		return 0;
+		return TbsDao.getFreeSpace(tableSpace);
 	}
 
 	@Override
 	public void replaceCurrentUndoTbs(TableSpace tableSpace) {
-		// TODO Auto-generated method stub
+		TbsDao.replaceCurrentUndoTbs(tableSpace);
 		
 	}
 

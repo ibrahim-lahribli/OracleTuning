@@ -2,14 +2,15 @@ package service;
 
 import java.util.List;
 
+import model.Dbf;
 import model.tableSpaceFactory.TableSpace;
 
 public interface TbsManager {
 	
-	public void addTbs(TableSpace tableSpace);
+	public void addTbs(TableSpace tableSpace, Dbf dbf);
 	public TableSpace findOne(String name);
 	public List<TableSpace> findAll();
-	public void setDefaultTableSpace(TableSpace tableSpace);
+	public void setDefaultTableSpace(TableSpace tableSpace, String user);
 	public void editSize(TableSpace tableSpace, Long size);
 	public void editThreshold(TableSpace tableSpace, Long threshold);
 	public void activerTbs(TableSpace tableSpace);

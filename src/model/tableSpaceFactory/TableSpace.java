@@ -10,6 +10,12 @@ public abstract class TableSpace {
 	private Long size;
 	private String status;
 	private double fillingRate;
+	public TableSpace(String name, Long size, String status) {
+		super();
+		this.name = name;
+		this.size = size;
+		this.status = status;
+	}
 	private List<Dbf> dbfList;
 	
 	public List<Dbf> getDbfList() {
