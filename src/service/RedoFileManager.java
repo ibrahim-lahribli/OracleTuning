@@ -1,11 +1,15 @@
 package service;
 
+import java.util.List;
+
 import model.RedoFile;
 
 public interface RedoFileManager {
 	
-	public void addFile(RedoFile redoFile);
-	public void removeFile(RedoFile redoFile);
-	public void setSize(RedoFile redoFile, int size);
+	public void addFile(String path, int size);
+	public void removeFile(String path);
+	public void setSize(String path, int size);
+	public List<RedoFile> AllRedoFiles();
 
 }
+

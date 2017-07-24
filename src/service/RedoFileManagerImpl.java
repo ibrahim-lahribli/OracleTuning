@@ -1,66 +1,42 @@
 package service;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
+import java.util.List;
 
-import dao.DbConfig;
+import dao.RedoFileDao;
 import model.RedoFile;
 
-public class RedoFileManagerImpl implements RedoFileManager{
+public class RedoFileManagerImpl {
 
-	@Override
-	public void addFile(RedoFile redoFile) {
+	RedoFileDao rfd=new RedoFileDao();
+	public void addFile(String path, int size) {
 		// TODO Auto-generated method stub
-		 try {
-	            
-	            DbConfig.Connect();
-	            String sql="alter database add LOGFILE('"+redoFile.getPath()+"') '"+redoFile.getSize()+"'";
-	            DbConfig.update(sql);
-	            DbConfig.disconnect();
-	            
-	           
-	            
-	        } catch (SQLException ex) {
-	            Logger.getLogger(RedoFile.class.getName()).log(Level.SEVERE, null, ex);
-	        }
+		
+		rfd.addFile(path, size);
+	}
+
+	
+	public void removeFile(String path) {
+		// TODO Auto-generated method stub
+		rfd.removeFile( path);
 		
 	}
 
-	@Override
-	public void removeFile(RedoFile redoFile) {
+
+	public void setSize( String path, int size) {
 		// TODO Auto-generated method stub
-		 try {
-	            
-	            DbConfig.Connect();
-	            String sql="alter database drop LOGFILE MEMBER '"+redoFile.getPath()+"'";
-	            DbConfig.update(sql);
-	            DbConfig.disconnect();
-	            
-	           
-	            
-	        } catch (SQLException ex) {
-	            Logger.getLogger(RedoFile.class.getName()).log(Level.SEVERE, null, ex);
-	        }
+		rfd.setSize( path,  size);
 		
 	}
 
-	@Override
-	public void setSize(RedoFile redoFile, int size) {
+	public List<RedoFile> AllRedoFiles() {
 		// TODO Auto-generated method stub
-		try{
-			DbConfig.Connect();
-	        String sql="alter database modify LOGFILE MEMBER '"+redoFile.getPath()+"' '"+redoFile.getSize()+"'";
-	        DbConfig.update(sql);
-	        DbConfig.disconnect();
-			
-			
-		 } catch (SQLException ex) {
-	         JOptionPane.showMessageDialog(null, ex);
-	        
-	    }
+		RedoFile rf=null;
+		
+		rfd.AllRedoFiles();
+		
+	      
+		 return (List<RedoFile>) rf;
 		
 	}
 
