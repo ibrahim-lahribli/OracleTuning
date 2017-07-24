@@ -27,14 +27,14 @@ public class TbsManagerImpl implements TbsManager {
 	}
 
 	@Override
-	public void editSize(TableSpace tableSpace, Long size) {
-		TbsDao.editSize(tableSpace, size);
+	public void editSize(TableSpace tableSpace, Dbf dataFile, Long size) {
+		TbsDao.editSize(tableSpace, dataFile, size);
 
 	}
 
 	@Override
 	public void editThreshold(TableSpace tableSpace, Long threshold) {
-		TbsDao.editSize(tableSpace, threshold);
+		TbsDao.editThreshold(tableSpace, threshold);
 
 	}
 
@@ -69,6 +69,11 @@ public class TbsManagerImpl implements TbsManager {
 	public void replaceCurrentUndoTbs(TableSpace tableSpace) {
 		TbsDao.replaceCurrentUndoTbs(tableSpace);
 		
+	}
+
+	@Override
+	public void addDbfToTbs(TableSpace tableSpace, Dbf dbf) {
+		TbsDao.addDbfToTbs(tableSpace, dbf);
 	}
 
 }

@@ -11,11 +11,12 @@ public interface TbsManager {
 	public TableSpace findOne(String name);
 	public List<TableSpace> findAll();
 	public void setDefaultTableSpace(TableSpace tableSpace, String user);
-	public void editSize(TableSpace tableSpace, Long size);
+	public void editSize(TableSpace tableSpace, Dbf dataFile, Long size);
 	public void editThreshold(TableSpace tableSpace, Long threshold);
 	public void activerTbs(TableSpace tableSpace);
 	public void desactiverTbs(TableSpace tableSpace);
 	public double getFreeSpace(TableSpace tableSpace);
 	public void replaceCurrentUndoTbs(TableSpace tableSpace);
+	public void addDbfToTbs(TableSpace tableSpace,Dbf dbf);
 	
 }

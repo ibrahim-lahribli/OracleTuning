@@ -71,13 +71,34 @@ public class TbsDao {
 
 	}
 
-	public static void editSize(TableSpace tableSpace, Long size) {
-		// TODO Auto-generated method stub
+	public static void editSize(TableSpace tableSpace, Dbf dataFile, Long size) {
+		try {
+
+			DbConfig.Connect();
+			String sql = "ALTER DATABASE DATAFILE '"+dataFile.getPath()+"' RESIZE "+size;
+			DbConfig.update(sql);
+			DbConfig.disconnect();
+
+		} catch (SQLException ex) {
+			Logger.getLogger(RedoFile.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
 	}
 
 	public static void editThreshold(TableSpace tableSpace, Long threshold) {
-		// TODO Auto-generated method stub
+		try {
+
+			DbConfig.Connect();
+			String sql = "Execute dbms_server_alter.set_threshold(Dbms_server_alert.tablespace_pct_full,"
+							+"Dbms_server_alert.operator_ge, 50,"
+							+"Dbms_server_alert.operator_ge,"+threshold+",1,1,NULL"
+							+"Dbms_server_alert.object_type_tablespace,'"+tableSpace.getName()+"'";
+			DbConfig.update(sql);
+			DbConfig.disconnect();
+
+		} catch (SQLException ex) {
+			Logger.getLogger(RedoFile.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
 	}
 
@@ -180,5 +201,18 @@ public class TbsDao {
 		}
 
 
+	}
+
+	public static void addDbfToTbs(TableSpace tableSpace, Dbf dbf) {
+		
+		try {
+			DbConfig.Connect();
+			String sql = "alter system set undo_tablespace = "+tableSpace.getName();
+			DbConfig.update(sql);
+			DbConfig.disconnect();
+
+		} catch (SQLException ex) {
+			Logger.getLogger(RedoFile.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 }
