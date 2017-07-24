@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import model.DictionaryCache;
+import model.LogBuffer;
 import service.DictionaryCacheManager;
 
 public class DictionaryCacheDAO implements DictionaryCacheManager {
@@ -15,9 +16,16 @@ public class DictionaryCacheDAO implements DictionaryCacheManager {
 		  try {
 	            
 	            DbConfig.Connect();
-	            String sql="select sum(gets) , sum(getmisses)  , sum(getmisses)/(sum(gets)+sum(getmisses))*100 as R from v$rowcache ";
+	            String sql="select sum(gets) , sum(getmisses), sum(getmisses)/(sum(gets)+sum(getmisses))*100  R  from v$rowcache ";
 	            DbConfig.pst= DbConfig.con.prepareStatement(sql);
 	            DbConfig.rs= DbConfig.pst.executeQuery(sql);
+	            if(DbConfig.rs.next()){
+	            	int gets = DbConfig.rs.getInt("gets");
+	            	int getmisses = DbConfig.rs.getInt("getmisses");
+					double R = DbConfig.rs.getDouble("R");
+					dc=new DictionaryCache(gets, getmisses, R);
+	            }
+	           
 
 	        } catch (SQLException ex) {
 	             JOptionPane.showMessageDialog(null, ex);

@@ -11,7 +11,8 @@ public class DbConfig {
 	public static ResultSet rs = null; // pour le jeu de resultat
 	public static PreparedStatement pst; // pour les requetes parametes
 	public static java.sql.Statement st; // pour les requetes simples
-	public static String instance ;
+	public static java.sql.CallableStatement cl;
+	public static String instance="ORACLETN" ;
 	
 	
 
@@ -28,7 +29,7 @@ public class DbConfig {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			String url = "jdbc:oracle:thin:@localhost:1521:"+instance; 
-			con = (Connection) DriverManager.getConnection(url, "sysdba", "sysdba");
+			con = (Connection) DriverManager.getConnection(url, "test", "test");
 			System.out.println("Connection réussie");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

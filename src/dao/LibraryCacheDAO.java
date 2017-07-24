@@ -5,7 +5,8 @@ package dao;
 	import javax.swing.JOptionPane;
 
 	import dao.DbConfig;
-	import model.LibraryCache;
+import model.DictionaryCache;
+import model.LibraryCache;
 import service.LibraryCacheManager;
 public class LibraryCacheDAO implements LibraryCacheManager{
 
@@ -19,9 +20,17 @@ public class LibraryCacheDAO implements LibraryCacheManager{
 			  try {
 		            
 		            DbConfig.Connect();
-		            String sql="select sum(pins) as Executions , sum(reloads) as Default de cache , sum(reloads)/(sum(pins)+sum(reloads))*100 as R from v$librarycache ";
+		            String sql="select sum(pins)  Executions , sum(reloads)  Default de cache , sum(reloads)/(sum(pins)+sum(reloads))*100 R from v$librarycache ";
 		            DbConfig.pst= DbConfig.con.prepareStatement(sql);
 		            DbConfig.rs= DbConfig.pst.executeQuery(sql);
+		            
+		            if(DbConfig.rs.next()){
+		            	int pins = DbConfig.rs.getInt("pins");
+		            	int reloads = DbConfig.rs.getInt("reloads");
+						double R = DbConfig.rs.getDouble("R");
+						lc=new LibraryCache(pins, reloads, R);
+		            }
+		           
 
 		        } catch (SQLException ex) {
 		             JOptionPane.showMessageDialog(null, ex);

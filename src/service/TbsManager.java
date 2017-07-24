@@ -11,7 +11,7 @@ public interface TbsManager {
 	public TableSpace findOne(String name);
 	public List<TableSpace> findAll();
 	public void setDefaultTableSpace(TableSpace tableSpace, String user);
-	public void editSize(TableSpace tableSpace, Dbf dataFile, Long size);
+	public void editSize(TableSpace tableSpace, String dataFile, Long size);
 	public void editThreshold(TableSpace tableSpace, Long threshold);
 	public void activerTbs(TableSpace tableSpace);
 	public void desactiverTbs(TableSpace tableSpace);

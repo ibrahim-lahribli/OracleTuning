@@ -27,7 +27,7 @@ public class TbsManagerImpl implements TbsManager {
 	}
 
 	@Override
-	public void editSize(TableSpace tableSpace, Dbf dataFile, Long size) {
+	public void editSize(TableSpace tableSpace, String dataFile, Long size) {
 		TbsDao.editSize(tableSpace, dataFile, size);
 
 	}

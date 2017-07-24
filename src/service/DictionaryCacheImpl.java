@@ -9,10 +9,7 @@ DictionaryCacheDAO dcd = new DictionaryCacheDAO();
 
 	public DictionaryCache getR() {
 		// TODO Auto-generated method stub
-		DictionaryCache dc=null;
-		 dcd.getR();
-	      
-		 return dc;
+		return dcd.getR();
 	}
 
 

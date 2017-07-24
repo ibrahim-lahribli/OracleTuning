@@ -7,10 +7,8 @@ public class LibraryCacheImpl {
 LibraryCacheDAO lbd = new LibraryCacheDAO();
 
 	public LibraryCache getR() {
-		LibraryCache lc=null;
-		lbd.getR();
-		return lc;
-		// TODO Auto-generated method stub
+		return lbd.getR();
+		
 		
 	}
 

@@ -21,6 +21,10 @@ public class LogBuffer {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Override
+	public String toString() {
+		return "LogBuffer [value=" + value + "]";
+	}
 	
 
 }

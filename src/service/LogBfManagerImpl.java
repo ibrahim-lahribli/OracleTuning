@@ -21,14 +21,14 @@ LogBfDao lbd=new LogBfDao();
 	}
 
 	
-	public void increaseSize(int percent) {
+	public void increaseSize(double percent) {
 		// TODO Auto-generated method stub
 		lbd.increaseSize(percent);
 		
 }
 
 
-	public void decreaseSize(int percent) {
+	public void decreaseSize(double percent) {
 		// TODO Auto-generated method stub
 		lbd.decreaseSize(percent);
 	}

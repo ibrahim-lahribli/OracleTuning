@@ -59,6 +59,13 @@ public abstract class TableSpace {
 		this.status = status;
 		this.fillingRate = fillingRate;
 	}
+	@Override
+	public String toString() {
+		return "TableSpace [name=" + name + ", size=" + size + ", status="
+				+ status + ", fillingRate=" + fillingRate + ", dbfList="
+				+ dbfList + "]";
+	}
+	
 	
 	
 }

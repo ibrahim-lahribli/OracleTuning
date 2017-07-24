@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,13 +18,16 @@ public class TbsDao {
 		TableSpace tableSpace=null;
 		try {
 			DbConfig.Connect();	
-			String sql="select TABLESPACE_NAME, CONTENTS, STATUS, nvl(sum(b.bytes),0) as SIZE from DBA_TABLESPACES where TABLESPACE_NAME="+name;	    
-			DbConfig.rs = DbConfig.select(sql);
+			String sql="select b.tablespace_name,a.bytes ,b.CONTENTS,b.status from dba_data_files a ,dba_tablespaces b where a.tablespace_name=b.tablespace_name and b.TABLESPACE_NAME='"+name+"'";    
+			//DbConfig.rs = DbConfig.select(sql);
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.rs= DbConfig.pst.executeQuery(sql);
+						    
 			while(DbConfig.rs.next()){
 				String type=DbConfig.rs.getString("CONTENTS");
-				String tbsName=DbConfig.rs.getString("TABLESPACE_NAME");
-				String status=DbConfig.rs.getString("STATUS");
-				Long size=DbConfig.rs.getLong("SIZE");
+				String tbsName=DbConfig.rs.getString("tablespace_name");
+				String status=DbConfig.rs.getString("status");
+				Long size=DbConfig.rs.getLong("bytes");
 				tableSpace=tableSpaceFactory.create(type, tbsName, size, status);
 				
 			}
@@ -34,20 +38,25 @@ public class TbsDao {
 		return tableSpace;
 	}
 
+	
+	@SuppressWarnings("null")
 	public static List<TableSpace> findAll() {
 		TableSpaceFactory tableSpaceFactory= new TableSpaceFactory();
-		List<TableSpace> tableSpaces= null;
+		List<TableSpace> tableSpaces= new ArrayList<TableSpace>();
 		TableSpace tableSpace=null;
 		try {
 			DbConfig.Connect();	
-			String sql="select TABLESPACE_NAME, CONTENTS, STATUS, nvl(sum(b.bytes),0) as SIZE from DBA_TABLESPACES";	    
-			DbConfig.rs = DbConfig.select(sql);
+			String sql="select b.tablespace_name,a.bytes ,b.CONTENTS,b.status from dba_data_files a ,dba_tablespaces b where a.tablespace_name=b.tablespace_name";	    
+			//DbConfig.rs = DbConfig.select(sql);
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.rs= DbConfig.pst.executeQuery(sql);
 			while(DbConfig.rs.next()){
 				String type=DbConfig.rs.getString("CONTENTS");
-				String name=DbConfig.rs.getString("TABLESPACE_NAME");
-				String status=DbConfig.rs.getString("STATUS");
-				Long size=DbConfig.rs.getLong("SIZE");
+				String name=DbConfig.rs.getString("tablespace_name");
+				String status=DbConfig.rs.getString("status");
+				Long size=DbConfig.rs.getLong("bytes");
 				tableSpace=tableSpaceFactory.create(type, name, size, status);
+				//System.out.println(tableSpace);
 				tableSpaces.add(tableSpace);
 			}
 		} catch (SQLException e) {
@@ -61,8 +70,11 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "alter user" + user + "default tablespace" + tableSpace.getName();
-			DbConfig.update(sql);
+			String sql = "alter user " + user.toUpperCase() + " default tablespace " + tableSpace.getName().toUpperCase();
+		//DbConfig.update(sql);
+			
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -71,12 +83,13 @@ public class TbsDao {
 
 	}
 
-	public static void editSize(TableSpace tableSpace, Dbf dataFile, Long size) {
+	public static void editSize(TableSpace tableSpace, String dataFile, Long size) {
 		try {
 
 			DbConfig.Connect();
-			String sql = "ALTER DATABASE DATAFILE '"+dataFile.getPath()+"' RESIZE "+size;
-			DbConfig.update(sql);
+			String sql = "ALTER DATABASE DATAFILE '"+dataFile.toUpperCase()+"' RESIZE "+size;
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -89,11 +102,10 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "Execute dbms_server_alter.set_threshold(Dbms_server_alert.tablespace_pct_full,"
-							+"Dbms_server_alert.operator_ge, 50,"
-							+"Dbms_server_alert.operator_ge,"+threshold+",1,1,NULL"
-							+"Dbms_server_alert.object_type_tablespace,'"+tableSpace.getName()+"'";
-			DbConfig.update(sql);
+			String sql = "{CALL DBMS_SERVER_ALERT.SET_THRESHOLD (Dbms_server_alert.tablespace_pct_full , Dbms_server_alert.operator_ge, 50 , Dbms_server_alert.operator_ge,"+threshold+", 1, 1, NULL ,Dbms_server_alert.object_type_tablespace, '"+tableSpace.getName().toUpperCase()+"')}";
+			DbConfig.cl= DbConfig.con.prepareCall(sql);
+			DbConfig.cl.execute();
+			
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -106,9 +118,10 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "create tablespace " + tableSpace.getName() + " datafile " + dataFile
-					+ " size 10m extent management local uniform size " + tableSpace.getSize() + "";
-			DbConfig.update(sql);
+			String sql = "create tablespace " + tableSpace.getName() + " datafile '" + dataFile.getName()
+					+ "' size 10m extent management local uniform size " + tableSpace.getSize() + "";
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -120,9 +133,10 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "create undo tablespace " + tableSpace.getName() + " datafile " + dataFile
-					+ " size 10m autoextent";
-			DbConfig.update(sql);
+			String sql = "create undo tablespace " + tableSpace.getName() + " datafile '" + dataFile.getPath()
+					+ "' size 10m autoextend on";
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -134,9 +148,10 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "create temporary tablespace " + tableSpace.getName() + " datafile " + dataFile
-					+ " size 5m";
-			DbConfig.update(sql);
+			String sql = "create temporary tablespace " + tableSpace.getName() + " datafile '" + dataFile.getPath()
+					+ "' size 5m";
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -148,8 +163,9 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "alter tablespace "+tableSpace.getName()+"online";
-			DbConfig.update(sql);
+			String sql = "alter tablespace "+tableSpace.getName()+" online";
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -162,8 +178,9 @@ public class TbsDao {
 		try {
 
 			DbConfig.Connect();
-			String sql = "alter tablespace "+tableSpace.getName()+"offline";
-			DbConfig.update(sql);
+			String sql = "alter tablespace "+tableSpace.getName()+" offline";
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -176,8 +193,10 @@ public class TbsDao {
 		double freeSpace= 0;
 		try {
 			DbConfig.Connect();	
-			String sql="select b.free_bytes from dba_data_files a, (select file_id, SUM(bytes) free_bytes from dba_free_space b group by file_id) b where a.file_id=b.file_id and a.tablespace_name ="+tableSpace.getName()+"";	    
-			DbConfig.rs = DbConfig.select(sql);
+			String sql="select b.free_bytes from dba_data_files a, (select file_id, SUM(bytes) free_bytes from dba_free_space b group by file_id) b where a.file_id=b.file_id and a.tablespace_name ='"+tableSpace.getName().toUpperCase()+"'";	    
+			//DbConfig.rs = DbConfig.select(sql);
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.rs= DbConfig.pst.executeQuery(sql);
 			if(DbConfig.rs.next()){
 				freeSpace=DbConfig.rs.getDouble("free_bytes");							
 			}
@@ -193,7 +212,8 @@ public class TbsDao {
 
 			DbConfig.Connect();
 			String sql = "alter system set undo_tablespace = "+tableSpace.getName();
-			DbConfig.update(sql);
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {
@@ -207,8 +227,9 @@ public class TbsDao {
 		
 		try {
 			DbConfig.Connect();
-			String sql = "alter system set undo_tablespace = "+tableSpace.getName();
-			DbConfig.update(sql);
+			String sql = "ALTER TABLESPACE "+tableSpace.getName().toUpperCase()+" add datafile '"+dbf.getPath()+"' size 10M";
+			DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.pst.executeUpdate(sql);
 			DbConfig.disconnect();
 
 		} catch (SQLException ex) {

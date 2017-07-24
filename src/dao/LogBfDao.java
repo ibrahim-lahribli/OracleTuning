@@ -20,9 +20,15 @@ public class LogBfDao implements LogBfManager {
 		  try {
 	            
 	            DbConfig.Connect();
-	            String sql="show parameter LOG_BUFFER ";
+	            String sql=" select name,value from v$system_parameter where name like '%log_buffer%' ";
+	            
 	            DbConfig.pst= DbConfig.con.prepareStatement(sql);
 	            DbConfig.rs= DbConfig.pst.executeQuery(sql);
+	            
+	            if(DbConfig.rs.next()){
+	            	lg=new LogBuffer(DbConfig.rs.getInt("value"));
+	            }
+	           
 
 	        } catch (SQLException ex) {
 	             JOptionPane.showMessageDialog(null, ex);
@@ -35,37 +41,18 @@ public class LogBfDao implements LogBfManager {
 	}
 
 	@Override
-	public void increaseSize(int percent) {
+	public void increaseSize(double percent) {
 		// TODO Auto-generated method stub
-		try{
-		DbConfig.Connect();
-        String sql="update v$sysstat set value='"+(getLogBuffer().getValue()*1.05)+"'";
-        DbConfig.update(sql);
-        DbConfig.disconnect();
 		
-		
-	 } catch (SQLException ex) {
-         JOptionPane.showMessageDialog(null, ex);
-        
-    }
-  
+		setSize((int) (getLogBuffer().getValue()*(1+percent)));
 		
 }
 
 	@Override
-	public void decreaseSize(int percent) {
-		// TODO Auto-generated method stub
-		try{
-			DbConfig.Connect();
-	        String sql="update v$sysstat set value='"+(getLogBuffer().getValue()*0.95)+"'";
-	        DbConfig.update(sql);
-	        DbConfig.disconnect();
-			
-			
-		 } catch (SQLException ex) {
-	         JOptionPane.showMessageDialog(null, ex);
-	        
-	    }
+	public void decreaseSize(double percent) {
+
+			setSize((int) (getLogBuffer().getValue()*(1-percent)));
+
 	}
 
 	@Override
@@ -74,8 +61,9 @@ public class LogBfDao implements LogBfManager {
 		
 		try{
 			DbConfig.Connect();
-	        String sql="ALTER SYSTEM SET LOG_BUFFER ='"+getLogBuffer().getValue()+"'";
-	        DbConfig.update(sql);
+	        String sql=" alter system set log_buffer="+size+" scope=spfile ";
+	        DbConfig.pst= DbConfig.con.prepareStatement(sql);
+            DbConfig.rs= DbConfig.pst.executeQuery(sql);
 	        DbConfig.disconnect();
 			
 			
