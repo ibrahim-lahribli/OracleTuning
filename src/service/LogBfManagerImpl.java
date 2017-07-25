@@ -1,6 +1,11 @@
 package service;
 
 
+import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
+
+import dao.DbConfig;
 import dao.LogBfDao;
 import model.LogBuffer;
 
@@ -40,6 +45,10 @@ LogBfDao lbd=new LogBfDao();
 		
 	}
 
+	public int getLogbufferState() {
+		
+		
+		return lbd.getLogbufferState();
+	      
 
-
-}
+	}}

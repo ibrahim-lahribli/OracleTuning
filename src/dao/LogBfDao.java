@@ -74,5 +74,35 @@ public class LogBfDao implements LogBfManager {
 		
 	}
 
+	@Override
+	public int getLogbufferState() {
+		
+		int state=0;
+		  try {
+	            
+	            DbConfig.Connect();
+	            String sql=" select value from v$sysstat where name ='redo log space requests' ";
+	            
+	            DbConfig.pst= DbConfig.con.prepareStatement(sql);
+	            DbConfig.rs= DbConfig.pst.executeQuery(sql);
+	            
+	            if(DbConfig.rs.next()){
+	            	state=DbConfig.rs.getInt("value");
+	            }
+	           
+
+	        } catch (SQLException ex) {
+	             JOptionPane.showMessageDialog(null, ex);
+	            
+	        }
+		return state;
+	      
+		 
+		
+		// TODO Auto-generated method stub
+		
+		
+	}
+
 
 }

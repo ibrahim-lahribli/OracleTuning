@@ -77,8 +77,10 @@ public class Main {
 		//libM.getR();
 		//DictionaryCache DictionaryCache = dICM.getR();
 		//System.out.println(DictionaryCache);
-		LibraryCache libraryCache =libM.getR();
-		System.out.println(libraryCache);
+		//LibraryCache libraryCache =libM.getR();
+		//System.out.println(libraryCache);
+		
+		//System.out.println(lbf.getLogbufferState());
 		
 	}
 }
